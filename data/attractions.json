@@ -1,0 +1,180 @@
+{
+  "cities": {
+    "北京": {
+      "id": "beijing",
+      "province": "北京市",
+      "description": "中国首都，历史文化名城，拥有众多世界文化遗产",
+      "attractions": [
+        {"name": "故宫博物院", "category": "历史文化", "address": "北京市东城区景山前街4号", "ticket": 60, "duration": "4-6小时", "rating": 4.9, "tips": "提前预约门票，周一闭馆；建议上午早去避开人流高峰"},
+        {"name": "八达岭长城", "category": "世界遗产", "address": "北京市延庆区G6京藏高速58号出口", "ticket": 40, "duration": "4-5小时", "rating": 4.8, "tips": "穿舒适运动鞋，春秋季最佳；可乘S2线或877路公交前往"},
+        {"name": "颐和园", "category": "皇家园林", "address": "北京市海淀区新建宫门路19号", "ticket": 30, "duration": "3-4小时", "rating": 4.8, "tips": "建议下午去，日落时分的昆明湖非常美；可以租船游湖"},
+        {"name": "天坛公园", "category": "历史文化", "address": "北京市东城区天坛内东里7号", "ticket": 15, "duration": "2-3小时", "rating": 4.7, "tips": "早上去可以看到大爷大妈踢毽子、唱京剧，很有老北京味道"},
+        {"name": "798艺术区", "category": "文艺街区", "address": "北京市朝阳区酒仙桥路4号", "ticket": 0, "duration": "2-4小时", "rating": 4.5, "tips": "免费开放，画廊和展览多为免费；适合拍照打卡"},
+        {"name": "南锣鼓巷", "category": "特色街区", "address": "北京市东城区南锣鼓巷", "ticket": 0, "duration": "1.5-2小时", "rating": 4.4, "tips": "老北京胡同文化代表，小吃和文创店很多；周末人流量大"},
+        {"name": "国家博物馆", "category": "博物馆", "address": "北京市东城区东长安街16号", "ticket": 0, "duration": "3-4小时", "rating": 4.8, "tips": "免费但需提前预约；馆藏海量建议重点参观古代中国展厅"},
+        {"name": "鸟巢/水立方", "category": "现代建筑", "address": "北京市朝阳区国家体育场南路1号", "ticket": 50, "duration": "1.5-2小时", "rating": 4.3, "tips": "夜景灯光很漂亮，适合晚上去拍夜景"}
+      ]
+    },
+    "上海": {
+      "id": "shanghai",
+      "province": "上海市",
+      "description": "国际化大都市，融合现代与传统的魔都",
+      "attractions": [
+        {"name": "外滩", "category": "城市景观", "address": "上海市黄浦区中山东一路", "ticket": 0, "duration": "1-2小时", "rating": 4.8, "tips": "建议傍晚去，可以看到浦西万国建筑群与浦东陆家嘴的日夜交替"},
+        {"name": "上海迪士尼乐园", "category": "主题乐园", "address": "上海市浦东新区川沙镇黄赵路310号", "ticket": 475, "duration": "全天", "rating": 4.7, "tips": "下载官方APP看排队时间；早享卡可提前1小时入园"},
+        {"name": "豫园", "category": "古典园林", "address": "上海市黄浦区福佑路168号", "ticket": 40, "duration": "2-3小时", "rating": 4.5, "tips": "旁边的城隍庙小吃街可以一并游览；南翔小笼包必尝"},
+        {"name": "南京路步行街", "category": "商业街", "address": "上海市黄浦区南京东路", "ticket": 0, "duration": "1.5-2小时", "rating": 4.4, "tips": "中国第一商业街，老字号与时尚品牌聚集；夜景繁华"},
+        {"name": "上海博物馆", "category": "博物馆", "address": "上海市黄浦区人民大道201号", "ticket": 0, "duration": "2.5-3小时", "rating": 4.7, "tips": "免费需预约；青铜器和陶瓷馆藏非常丰富"},
+        {"name": "田子坊", "category": "文艺街区", "address": "上海市黄浦区泰康路210弄", "ticket": 0, "duration": "1-2小时", "rating": 4.3, "tips": "石库门里弄改造的艺术街区，小店和咖啡馆很多"},
+        {"name": "东方明珠塔", "category": "城市地标", "address": "上海市浦东新区世纪大道1号", "ticket": 199, "duration": "1.5-2小时", "rating": 4.5, "tips": "建议傍晚登塔，日落+夜景一次看够；玻璃走廊刺激有趣"}
+      ]
+    },
+    "西安": {
+      "id": "xian",
+      "province": "陕西省",
+      "description": "十三朝古都，丝绸之路起点，历史文化底蕴深厚",
+      "attractions": [
+        {"name": "秦始皇兵马俑", "category": "世界遗产", "address": "西安市临潼区秦陵北路", "ticket": 120, "duration": "3-4小时", "rating": 4.9, "tips": "世界第八大奇迹！建议请讲解或租讲解器，否则容易看不懂"},
+        {"name": "大雁塔", "category": "历史文化", "address": "西安市雁塔区慈恩路1号", "ticket": 50, "duration": "2-2.5小时", "rating": 4.7, "tips": "晚上北广场有亚洲最大音乐喷泉表演（免费），非常壮观"},
+        {"name": "西安城墙", "category": "历史遗迹", "address": "西安市碑林区南大街", "ticket": 54, "duration": "2-4小时", "rating": 4.7, "tips": "推荐租自行车骑行一圈（约14公里），傍晚骑行看日落特别美"},
+        {"name": "回民街", "category": "美食街区", "address": "西安市莲湖区回民街", "ticket": 0, "duration": "1.5-2小时", "rating": 4.5, "tips": "西安美食天堂！推荐肉夹馍、羊肉泡馍、biangbiang面、凉皮"},
+        {"name": "陕西历史博物馆", "category": "博物馆", "address": "西安市雁塔区小寨东路91号", "ticket": 0, "duration": "3-4小时", "rating": 4.8, "tips": "免费但需提前3天预约（非常难约！）；珍宝馆值得额外购票"},
+        {"name": "华清宫", "category": "历史遗迹", "address": "西安市临潼区华清路38号", "ticket": 108, "duration": "2-3小时", "rating": 4.5, "tips": "可以和兵马俑安排在同一天；晚上有《长恨歌》实景演出"},
+        {"name": "大唐不夜城", "category": "主题街区", "address": "西安市雁塔区慈恩路", "ticket": 0, "duration": "1.5-2小时", "rating": 4.6, "tips": "建议晚上去，灯光非常漂亮；不倒翁小姐姐是网红打卡点"}
+      ]
+    },
+    "成都": {
+      "id": "chengdu",
+      "province": "四川省",
+      "description": "天府之国，美食之都，大熊猫的故乡",
+      "attractions": [
+        {"name": "大熊猫繁育研究基地", "category": "自然生态", "address": "成都市成华区熊猫大道1375号", "ticket": 55, "duration": "3-4小时", "rating": 4.9, "tips": "一定要早上去！大熊猫上午最活跃；月亮产房能看到熊猫宝宝"},
+        {"name": "宽窄巷子", "category": "特色街区", "address": "成都市青羊区长顺街", "ticket": 0, "duration": "1.5-2小时", "rating": 4.5, "tips": "宽巷子看老建筑，窄巷子品成都慢生活；蜀绣和变脸表演值得看"},
+        {"name": "锦里古街", "category": "美食街区", "address": "成都市武侯区武侯祠大街231号", "ticket": 0, "duration": "1.5-2小时", "rating": 4.5, "tips": "紧邻武侯祠，三国文化氛围浓厚；夜晚灯笼亮起很有氛围"},
+        {"name": "都江堰", "category": "世界遗产", "address": "成都市都江堰市公园路", "ticket": 80, "duration": "3-4小时", "rating": 4.7, "tips": "两千多年前的水利工程至今仍在用！从成都乘高铁约30分钟可达"},
+        {"name": "武侯祠", "category": "历史文化", "address": "成都市武侯区武侯祠大街231号", "ticket": 50, "duration": "1.5-2小时", "rating": 4.6, "tips": "三国迷必去！红墙夹道是网红拍照点"},
+        {"name": "人民公园", "category": "城市公园", "address": "成都市青羊区小南街8号", "ticket": 0, "duration": "1-1.5小时", "rating": 4.4, "tips": "体验地道成都慢生活：鹤鸣茶社喝茶、掏耳朵、看大爷下棋"},
+        {"name": "春熙路/太古里", "category": "商业街", "address": "成都市锦江区春熙路", "ticket": 0, "duration": "1.5-2小时", "rating": 4.5, "tips": "成都最繁华商圈；IFS爬楼熊猫是网红打卡地标"}
+      ]
+    },
+    "杭州": {
+      "id": "hangzhou",
+      "province": "浙江省",
+      "description": "上有天堂下有苏杭，西湖美景闻名天下",
+      "attractions": [
+        {"name": "西湖", "category": "自然风光", "address": "杭州市西湖区龙井路1号", "ticket": 0, "duration": "4-6小时", "rating": 4.9, "tips": "免费！推荐苏堤春晓、断桥残雪、雷峰夕照经典路线；骑行环湖很惬意"},
+        {"name": "灵隐寺", "category": "宗教文化", "address": "杭州市西湖区法云弄1号", "ticket": 75, "duration": "2-3小时", "rating": 4.7, "tips": "千年古刹，飞来峰石刻精美；进寺需另购香花券"},
+        {"name": "西溪国家湿地公园", "category": "自然生态", "address": "杭州市西湖区天目山路518号", "ticket": 80, "duration": "3-4小时", "rating": 4.5, "tips": "《非诚勿扰》取景地；坐摇橹船体验更佳"},
+        {"name": "宋城", "category": "主题公园", "address": "杭州市西湖区之江路148号", "ticket": 320, "duration": "4-5小时", "rating": 4.4, "tips": "《宋城千古情》演出很震撼，建议买演出联票"},
+        {"name": "龙井村", "category": "特色村落", "address": "杭州市西湖区龙井路", "ticket": 0, "duration": "2-3小时", "rating": 4.4, "tips": "春天采茶季最佳；可以在茶农家品尝正宗龙井茶"},
+        {"name": "河坊街", "category": "美食街区", "address": "杭州市上城区河坊街", "ticket": 0, "duration": "1-2小时", "rating": 4.3, "tips": "南宋古街，定胜糕、葱包烩等杭州小吃集中地"}
+      ]
+    },
+    "广州": {
+      "id": "guangzhou",
+      "province": "广东省",
+      "description": "千年商都，美食天堂，岭南文化中心",
+      "attractions": [
+        {"name": "广州塔（小蛮腰）", "category": "城市地标", "address": "广州市海珠区阅江西路222号", "ticket": 150, "duration": "2-2.5小时", "rating": 4.6, "tips": "建议傍晚登塔，珠江夜景尽收眼底；摩天轮套餐值得体验"},
+        {"name": "长隆野生动物世界", "category": "主题乐园", "address": "广州市番禺区香江大道593号", "ticket": 300, "duration": "全天", "rating": 4.8, "tips": "亚洲最大野生动物园；建议坐小火车游览自驾区"},
+        {"name": "沙面岛", "category": "历史街区", "address": "广州市荔湾区沙面岛", "ticket": 0, "duration": "1.5-2小时", "rating": 4.5, "tips": "欧陆风情建筑群，适合拍照漫步；周边有很多老字号餐厅"},
+        {"name": "陈家祠", "category": "历史文化", "address": "广州市荔湾区中山七路恩龙里34号", "ticket": 10, "duration": "1.5-2小时", "rating": 4.7, "tips": "岭南建筑艺术瑰宝，石雕、木雕、砖雕三绝"},
+        {"name": "北京路步行街", "category": "商业街", "address": "广州市越秀区北京路", "ticket": 0, "duration": "1.5-2小时", "rating": 4.4, "tips": "千年古道遗址在路面下玻璃展示；美食和购物一站式"},
+        {"name": "白云山", "category": "自然风光", "address": "广州市白云区白云大道南", "ticket": 5, "duration": "3-4小时", "rating": 4.5, "tips": "羊城第一秀；建议坐缆车上山，俯瞰广州全城"}
+      ]
+    },
+    "重庆": {
+      "id": "chongqing",
+      "province": "重庆市",
+      "description": "8D魔幻山城，火锅之都，夜景震撼",
+      "attractions": [
+        {"name": "洪崖洞", "category": "城市地标", "address": "重庆市渝中区嘉陵江滨江路88号", "ticket": 0, "duration": "1.5-2小时", "rating": 4.6, "tips": "现实版千与千寻！建议晚上亮灯后去，从千厮门大桥拍全景最佳"},
+        {"name": "磁器口古镇", "category": "历史街区", "address": "重庆市沙坪坝区磁南街1号", "ticket": 0, "duration": "2-3小时", "rating": 4.3, "tips": "千年古镇；陈麻花是必买伴手礼，手工酸辣粉很好吃"},
+        {"name": "解放碑", "category": "商业中心", "address": "重庆市渝中区解放碑", "ticket": 0, "duration": "1-1.5小时", "rating": 4.4, "tips": "重庆地标商圈；八一好吃街就在旁边，酸辣粉、小面、山城汤圆都值得尝"},
+        {"name": "长江索道", "category": "交通体验", "address": "重庆市渝中区新华路151号", "ticket": 20, "duration": "0.5小时", "rating": 4.5, "tips": "万里长江第一条空中走廊；建议傍晚乘坐，江景+落日很美"},
+        {"name": "南山一棵树", "category": "观景台", "address": "重庆市南岸区南山公园路", "ticket": 30, "duration": "1-1.5小时", "rating": 4.5, "tips": "重庆最佳夜景观景台！建议天快黑时到达，看着城市灯光逐渐亮起"},
+        {"name": "武隆天生三桥", "category": "自然奇观", "address": "重庆市武隆区仙女山镇", "ticket": 125, "duration": "3-4小时", "rating": 4.6, "tips": "《变形金刚4》取景地；从重庆主城出发需约2.5小时车程"}
+      ]
+    },
+    "南京": {
+      "id": "nanjing",
+      "province": "江苏省",
+      "description": "六朝古都，文化名城，梧桐树下的民国风情",
+      "attractions": [
+        {"name": "中山陵", "category": "历史纪念", "address": "南京市玄武区石象路7号", "ticket": 0, "duration": "2-3小时", "rating": 4.8, "tips": "免费但需预约；392级台阶象征当时3亿9千2百万同胞"},
+        {"name": "夫子庙-秦淮风光带", "category": "历史文化", "address": "南京市秦淮区夫子庙", "ticket": 0, "duration": "2-3小时", "rating": 4.5, "tips": "晚上秦淮河灯光非常美；可乘画舫夜游秦淮河"},
+        {"name": "南京博物院", "category": "博物馆", "address": "南京市玄武区中山东路321号", "ticket": 0, "duration": "3-4小时", "rating": 4.7, "tips": "中国三大博物馆之一；民国馆非常出片"},
+        {"name": "明孝陵", "category": "世界遗产", "address": "南京市玄武区石象路", "ticket": 70, "duration": "2-3小时", "rating": 4.6, "tips": "明太祖朱元璋陵墓；秋季石象路银杏金黄，南京最美600米"},
+        {"name": "总统府", "category": "历史建筑", "address": "南京市玄武区长江路292号", "ticket": 40, "duration": "2-2.5小时", "rating": 4.6, "tips": "民国历史爱好者必去；了解中国近代史的重要场所"}
+      ]
+    },
+    "厦门": {
+      "id": "xiamen",
+      "province": "福建省",
+      "description": "海上花园，文艺小清新的海岛城市",
+      "attractions": [
+        {"name": "鼓浪屿", "category": "海岛风光", "address": "厦门市思明区鼓浪屿", "ticket": 35, "duration": "全天", "rating": 4.8, "tips": "提前在厦门轮渡公众号买船票！菽庄花园和日光岩是岛上的精华"},
+        {"name": "厦门大学", "category": "校园景观", "address": "厦门市思明区思明南路422号", "ticket": 0, "duration": "1.5-2小时", "rating": 4.6, "tips": "中国最美大学之一；芙蓉隧道涂鸦墙是网红打卡点；需预约入校"},
+        {"name": "曾厝垵", "category": "文艺街区", "address": "厦门市思明区曾厝垵", "ticket": 0, "duration": "1.5-2小时", "rating": 4.3, "tips": "文艺小店+小吃聚集地；沙茶面、海蛎煎是必尝美食"},
+        {"name": "环岛路", "category": "滨海景观", "address": "厦门市思明区环岛路", "ticket": 0, "duration": "1.5-2小时", "rating": 4.6, "tips": "推荐租自行车骑行；椰风寨到会展中心段最美"},
+        {"name": "南普陀寺", "category": "宗教文化", "address": "厦门市思明区思明南路515号", "ticket": 0, "duration": "1-1.5小时", "rating": 4.5, "tips": "闽南佛教圣地；后山可以俯瞰厦门全景；素饼是特色伴手礼"}
+      ]
+    },
+    "昆明": {
+      "id": "kunming",
+      "province": "云南省",
+      "description": "春城花都，四季如春的高原明珠",
+      "attractions": [
+        {"name": "石林", "category": "世界遗产", "address": "昆明市石林彝族自治县", "ticket": 130, "duration": "3-5小时", "rating": 4.6, "tips": "世界自然遗产喀斯特地貌；从昆明市区驾车约1.5小时"},
+        {"name": "滇池", "category": "自然风光", "address": "昆明市西山区滇池路", "ticket": 0, "duration": "2-3小时", "rating": 4.4, "tips": "冬季红嘴鸥从西伯利亚飞来，喂海鸥是最棒的体验"},
+        {"name": "翠湖公园", "category": "城市公园", "address": "昆明市五华区翠湖南路67号", "ticket": 0, "duration": "1-1.5小时", "rating": 4.4, "tips": "市民休闲好去处；冬季也有很多海鸥聚集"},
+        {"name": "云南民族村", "category": "民族文化", "address": "昆明市西山区滇池路1310号", "ticket": 90, "duration": "3-4小时", "rating": 4.3, "tips": "了解云南25个少数民族文化的好地方；民族表演很有趣"},
+        {"name": "斗南花市", "category": "特色市场", "address": "昆明市呈贡区斗南街道", "ticket": 0, "duration": "1-1.5小时", "rating": 4.5, "tips": "亚洲最大鲜花交易市场！鲜花白菜价，玫瑰几毛钱一支"}
+      ]
+    },
+    "三亚": {
+      "id": "sanya",
+      "province": "海南省",
+      "description": "热带滨海旅游城市，阳光沙滩度假天堂",
+      "attractions": [
+        {"name": "亚龙湾", "category": "海滩", "address": "三亚市亚龙湾国家旅游度假区", "ticket": 0, "duration": "3-4小时", "rating": 4.7, "tips": "天下第一湾！沙质细腻海水清澈；周边高档酒店林立"},
+        {"name": "蜈支洲岛", "category": "海岛", "address": "三亚市海棠区蜈支洲岛", "ticket": 144, "duration": "全天", "rating": 4.6, "tips": "潜水天堂！海水能见度高；建议买含电瓶车的套票"},
+        {"name": "南山文化旅游区", "category": "宗教文化", "address": "三亚市崖州区南山村", "ticket": 129, "duration": "3-4小时", "rating": 4.5, "tips": "108米海上观音非常震撼；园区很大建议坐电瓶车"},
+        {"name": "天涯海角", "category": "自然风光", "address": "三亚市天涯区天涯海角", "ticket": 81, "duration": "2-3小时", "rating": 4.3, "tips": "经典打卡地；建议傍晚去，落日余晖下的礁石很美"},
+        {"name": "三亚湾椰梦长廊", "category": "滨海景观", "address": "三亚市三亚湾路", "ticket": 0, "duration": "1-1.5小时", "rating": 4.4, "tips": "免费海滨长廊；夕阳时分最美，很多新人在这里拍婚纱照"}
+      ]
+    },
+    "长沙": {
+      "id": "changsha",
+      "province": "湖南省",
+      "description": "网红美食之城，楚汉文化发源地",
+      "attractions": [
+        {"name": "岳麓山", "category": "自然风光", "address": "长沙市岳麓区登高路58号", "ticket": 0, "duration": "2-3小时", "rating": 4.6, "tips": "爱晚亭是四大名亭之一；岳麓书院千年学府值得参观"},
+        {"name": "橘子洲", "category": "城市公园", "address": "长沙市岳麓区橘子洲头2号", "ticket": 0, "duration": "2-3小时", "rating": 4.6, "tips": "毛泽东青年雕像所在地；周末晚上有焰火表演（需关注官方公告）"},
+        {"name": "太平老街", "category": "美食街区", "address": "长沙市天心区太平街", "ticket": 0, "duration": "1-2小时", "rating": 4.4, "tips": "长沙美食集中地：臭豆腐、糖油粑粑、茶颜悦色一条街"},
+        {"name": "湖南省博物馆", "category": "博物馆", "address": "长沙市开福区东风路50号", "ticket": 0, "duration": "2-3小时", "rating": 4.7, "tips": "马王堆汉墓文物是镇馆之宝；辛追夫人千年不腐遗体令人震撼"},
+        {"name": "IFS国金中心", "category": "商业中心", "address": "长沙市芙蓉区解放西路188号", "ticket": 0, "duration": "1-1.5小时", "rating": 4.4, "tips": "楼顶KAWS雕塑是网红打卡点；超级文和友也在附近"}
+      ]
+    }
+  },
+  "hotels": {
+    "budget": [
+      {"name": "如家快捷酒店", "price_per_night": 180, "level": "经济型", "amenities": "WiFi/空调/24小时热水"},
+      {"name": "7天连锁酒店", "price_per_night": 160, "level": "经济型", "amenities": "WiFi/洗漱用品/叫醒服务"},
+      {"name": "汉庭酒店", "price_per_night": 220, "level": "经济型", "amenities": "WiFi/早餐/行李寄存"},
+      {"name": "青旅民宿", "price_per_night": 80, "level": "经济型", "amenities": "WiFi/公共空间/社交活动"}
+    ],
+    "standard": [
+      {"name": "全季酒店", "price_per_night": 380, "level": "舒适型", "amenities": "WiFi/自助早餐/健身房/洗衣房"},
+      {"name": "亚朵酒店", "price_per_night": 420, "level": "舒适型", "amenities": "WiFi/早餐/图书馆/健身房"},
+      {"name": "桔子酒店", "price_per_night": 350, "level": "舒适型", "amenities": "WiFi/早餐/智能客控/免费Mini吧"},
+      {"name": "锦江之星", "price_per_night": 280, "level": "舒适型", "amenities": "WiFi/早餐/会议室/停车场"}
+    ],
+    "luxury": [
+      {"name": "希尔顿酒店", "price_per_night": 850, "level": "豪华型", "amenities": "WiFi/游泳池/行政酒廊/SPA"},
+      {"name": "万豪酒店", "price_per_night": 900, "level": "豪华型", "amenities": "WiFi/泳池/健身中心/行政套房"},
+      {"name": "洲际酒店", "price_per_night": 950, "level": "豪华型", "amenities": "WiFi/无边泳池/米其林餐厅/管家服务"},
+      {"name": "悦榕庄", "price_per_night": 1500, "level": "豪华型", "amenities": "WiFi/私人泳池/SPA/别墅庭院"}
+    ]
+  }
+}

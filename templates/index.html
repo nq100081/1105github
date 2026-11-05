@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能旅行规划系统 🌍</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   桌面端专业风格 — Desktop Professional Theme
+   ══════════════════════════════════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f0f2f5;
+  --card-bg:#fff;
+  --card-border:#e8e8ec;
+  --card-shadow:0 1px 2px rgba(0,0,0,0.04),0 2px 8px rgba(0,0,0,0.04);
+  --text:#1d2129;
+  --text-2:#6b7280;
+  --primary:#10b981;
+  --primary-hover:#059669;
+  --primary-bg:rgba(16,185,129,0.06);
+  --accent:#3b82f6;
+  --accent2:#f59e0b;
+  --danger:#ef4444;
+  --radius:8px;
+  --radius-sm:6px;
+  --sidebar-w:220px;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+}
+
+/* ═══════════ 整体布局：侧边栏 + 主内容 ═══════════ */
+#app{display:flex;min-height:100vh}
+
+/* ── 左侧边栏（桌面原生风格） ── */
+.sidebar{
+  width:var(--sidebar-w);min-height:100vh;position:fixed;left:0;top:0;z-index:100;
+  background:#fff;border-right:1px solid #e5e7eb;
+  display:flex;flex-direction:column;padding:20px 0;
+}
+.sidebar-logo{
+  padding:0 20px 20px;border-bottom:1px solid #f0f0f3;margin-bottom:4px;
+}
+.sidebar-logo h1{
+  font-size:17px;font-weight:700;color:var(--primary);
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-logo h1::before{content:'🌍';font-size:20px}
+.sidebar-logo p{font-size:11px;color:var(--text-2);margin-top:4px}
+.sidebar-nav{flex:1;padding:8px 12px}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-radius:6px;cursor:pointer;transition:all 0.15s;
+  color:var(--text-2);font-size:13px;font-weight:500;margin-bottom:2px;
+  user-select:none;
+}
+.sidebar-item:hover{background:#f3f4f6;color:var(--text)}
+.sidebar-item.active{background:var(--primary-bg);color:var(--primary);font-weight:600}
+.sidebar-item .nav-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.sidebar-item .nav-badge{
+  margin-left:auto;background:var(--primary);color:#fff;font-size:10px;
+  padding:1px 7px;border-radius:8px;font-weight:600;line-height:1.6;
+}
+.sidebar-footer{padding:14px 20px;border-top:1px solid #f0f0f3}
+.sidebar-footer .status-dot{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-2)}
+.sidebar-footer .dot{width:6px;height:6px;border-radius:50%;background:var(--primary)}
+.sidebar-footer .dot.off{background:#d1d5db}
+
+/* ── 主内容区 ── */
+.main-content{
+  margin-left:var(--sidebar-w);flex:1;padding:24px 28px;
+  min-width:0;max-width:1400px;
+}
+
+/* ── 卡片 ── */
+.glass{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:var(--radius);box-shadow:var(--card-shadow);
+  padding:20px;margin-bottom:14px;
+}
+
+/* ── 页面标题 ── */
+.page-title{font-size:22px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.page-subtitle{font-size:13px;color:var(--text-2);margin-bottom:20px}
+
+/* ── 两栏布局 ── */
+.two-col{display:flex;gap:14px;align-items:flex-start}
+.col-left{flex:0 0 340px;min-width:280px}
+.col-right{flex:1;min-width:0}
+.col-wide{flex:1;min-width:0}
+
+/* ── 表单样式 ── */
+.form-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.form-row>*{flex:1;min-width:140px}
+.form-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:4px;display:block}
+.form-input{
+  width:100%;padding:9px 12px;border:1px solid #d1d5db;
+  border-radius:var(--radius-sm);font-size:13px;background:#fff;
+  outline:none;transition:all 0.2s;color:var(--text);
+}
+.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(16,185,129,0.1)}
+select.form-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px}
+
+.btn{
+  padding:9px 18px;border:none;border-radius:var(--radius-sm);font-size:13px;
+  font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.btn-go{
+  background:var(--primary);color:#fff;width:100%;padding:11px;font-size:14px;
+  border-radius:var(--radius-sm);
+}
+.btn-go:hover{background:var(--primary-hover)}
+.btn-go:active{transform:scale(0.99)}
+.btn-go:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:4px}
+.btn-outline{background:#fff;border:1px solid #d1d5db;color:var(--text)}
+.btn-outline:hover{background:#f9fafb;border-color:#9ca3af}
+
+/* ── Agent 进度面板 ── */
+.agent-item{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;
+  border-bottom:1px solid #f3f4f6;transition:all 0.2s;
+}
+.agent-item:last-child{border-bottom:none}
+.agent-icon{font-size:20px;flex-shrink:0;transition:transform 0.3s;width:26px;text-align:center}
+.agent-item.running .agent-icon{animation:bounce 0.6s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.agent-info{flex:1;min-width:0}
+.agent-name{font-size:12px;font-weight:600;color:var(--text)}
+.agent-msg{font-size:11px;color:var(--text-2);margin-top:1px}
+.agent-status{font-size:14px;flex-shrink:0;width:22px;text-align:center}
+.progress-bar{height:4px;background:#e5e7eb;border-radius:2px;margin-top:10px;overflow:hidden}
+.progress-fill{height:100%;background:var(--primary);transition:width 0.5s;border-radius:2px}
+
+/* ── 行程列表项 ── */
+.trip-list{max-height:calc(100vh - 200px);overflow-y:auto;padding-right:2px}
+.trip-list-item{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border-radius:var(--radius-sm);margin-bottom:6px;cursor:pointer;
+  background:#fff;transition:all 0.15s;border:1px solid #e5e7eb;
+}
+.trip-list-item:hover{border-color:#10b98160;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.trip-list-item.active{background:var(--primary-bg);border-color:var(--primary)}
+.trip-dest{font-weight:700;font-size:15px}
+.trip-info{font-size:11px;color:var(--text-2);margin-top:2px}
+.trip-date{font-size:11px;color:#9ca3af;flex-shrink:0}
+.trip-icon{font-size:24px;flex-shrink:0}
+
+/* ── 行程详情 ── */
+.detail-scroll{max-height:calc(100vh - 200px);overflow-y:auto;padding-right:4px}
+.day-card{margin-bottom:10px}
+.day-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid #f3f4f6;
+}
+.day-title{font-size:14px;font-weight:700}
+.day-summary{font-size:11px;color:var(--text-2)}
+.day-weather{font-size:12px;color:var(--accent);font-weight:500}
+.place-item{
+  display:flex;align-items:flex-start;gap:10px;padding:8px 0;
+  border-bottom:1px solid #f9fafb;
+}
+.place-item:last-child{border-bottom:none}
+.place-time{
+  font-size:11px;color:var(--primary);font-weight:600;background:var(--primary-bg);
+  padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px;
+}
+.place-info{flex:1;min-width:0}
+.place-name{font-size:13px;font-weight:600}
+.place-meta{font-size:11px;color:var(--text-2);margin-top:2px}
+.place-tips{font-size:11px;color:var(--accent2);margin-top:2px}
+.place-ticket{font-size:12px;color:var(--danger);flex-shrink:0;font-weight:600}
+.meal-section{padding:8px 10px;background:#fffbeb;border-radius:4px;margin-top:6px;font-size:11px}
+.meal-section .label{color:var(--accent2);font-weight:600}
+
+/* ── 预算 ── */
+.budget-summary{text-align:center;padding:4px 0}
+.budget-total{font-size:28px;font-weight:700;color:var(--primary)}
+.budget-total small{font-size:13px;color:var(--text-2);font-weight:400}
+.budget-chart{width:100%;height:280px}
+.budget-items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.budget-tag{
+  padding:4px 10px;border-radius:4px;font-size:11px;font-weight:600;
+  background:#f9fafb;border:1px solid #e5e7eb;
+}
+
+/* ── 聊天区 ── */
+.chat-panel{display:flex;gap:14px;height:calc(100vh - 150px)}
+.chat-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.chat-messages{flex:1;overflow-y:auto;padding-right:4px;min-height:300px}
+.chat-sidebar{flex:0 0 260px;min-width:220px}
+.chat-msg{display:flex;gap:10px;margin-bottom:14px;animation:fadeUp 0.3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-msg.user{flex-direction:row-reverse}
+.chat-avatar{font-size:28px;flex-shrink:0;width:32px;text-align:center}
+.chat-bubble{max-width:70%;padding:10px 14px;border-radius:8px;font-size:13px;line-height:1.6}
+.chat-msg.assistant .chat-bubble{background:#f3f4f6;color:var(--text)}
+.chat-msg.user .chat-bubble{background:var(--primary);color:#fff}
+.chat-msg.system .chat-bubble{background:#fffbeb;font-size:11px;color:var(--accent2);text-align:center;max-width:100%}
+.chat-input-row{display:flex;gap:8px;margin-top:10px}
+.chat-input-row input{
+  flex:1;padding:10px 16px;border:1px solid #d1d5db;
+  border-radius:6px;font-size:13px;outline:none;background:#fff;
+}
+.chat-input-row input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(16,185,129,0.1)}
+.btn-send{
+  width:40px;height:40px;border-radius:6px;border:none;
+  background:var(--primary);color:#fff;font-size:16px;cursor:pointer;
+  flex-shrink:0;transition:all 0.2s;
+}
+.btn-send:hover{background:var(--primary-hover)}
+.btn-send:disabled{opacity:0.5}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:300;
+  background:#1f2937;color:#fff;padding:10px 22px;border-radius:6px;
+  font-size:13px;pointer-events:none;
+  animation:toastIn 2.5s ease forwards;
+}
+@keyframes toastIn{0%{opacity:0;transform:translateX(-50%) translateY(-8px)}15%{opacity:1;transform:translateX(-50%) translateY(0)}70%{opacity:1}100%{opacity:0}}
+
+/* 滚动条 */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#9ca3af}
+
+/* ── 快速提问标签 ── */
+.quick-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.quick-chip{
+  padding:5px 12px;border-radius:4px;font-size:11px;cursor:pointer;
+  background:#fff;border:1px solid #e5e7eb;
+  transition:all 0.15s;white-space:nowrap;
+}
+.quick-chip:hover{background:var(--primary-bg);border-color:var(--primary)}
+
+/* ── 登录弹窗 ── */
+.login-mask{
+  position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:400;
+  display:flex;align-items:center;justify-content:center;
+}
+.login-box{
+  background:#fff;border-radius:12px;padding:32px 28px;width:380px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);text-align:center;
+}
+.login-box h2{font-size:20px;font-weight:700;margin-bottom:8px}
+.login-box p{font-size:13px;color:var(--text-2);margin-bottom:20px}
+.login-box input{
+  width:100%;padding:12px 16px;border:1px solid #d1d5db;border-radius:8px;
+  font-size:14px;outline:none;margin-bottom:16px;text-align:center;
+}
+.login-box input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(16,185,129,0.1)}
+.login-box .btn{width:100%;padding:12px}
+.login-switch{margin-top:16px;font-size:13px;color:var(--text-2)}
+.login-switch a{color:var(--primary);cursor:pointer;font-weight:600}
+.login-switch a:hover{color:var(--primary-hover)}
+
+/* ── 侧边栏用户区 ── */
+.sidebar-user{
+  display:flex;align-items:center;gap:8px;padding:0 20px 12px;
+}
+.sidebar-user .user-avatar{font-size:22px}
+.sidebar-user .user-name{font-size:13px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sidebar-user .user-logout{font-size:11px;color:var(--text-2);cursor:pointer;padding:3px 8px;border-radius:4px;border:1px solid #e5e7eb;background:#fff}
+.sidebar-user .user-logout:hover{color:var(--danger);border-color:var(--danger)}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Toast -->
+  <div class="toast" v-if="toast.show">{{ toast.msg }}</div>
+
+  <!-- 登录弹窗 -->
+  <div class="login-mask" v-if="showLogin" @click.self="()=>{}">
+    <div class="login-box">
+      <h2 v-if="loginMode==='register'">📝 注册新账号</h2>
+      <h2 v-else>🌍 欢迎回来</h2>
+      <p v-if="loginMode==='register'">创建账号后，你的行程数据将独立保存</p>
+      <p v-else>登录以查看你的行程数据</p>
+      <input v-model="loginName" type="text" placeholder="用户名"
+             maxlength="15" autofocus>
+      <input v-model="loginPassword" type="password" placeholder="密码"
+             @keyup.enter="loginMode==='register' ? doRegister() : doLogin()">
+      <button class="btn btn-go" v-if="loginMode==='login'"
+              @click="doLogin" :disabled="!loginName.trim() || !loginPassword.trim()">
+        登 录
+      </button>
+      <button class="btn btn-go" v-else
+              @click="doRegister" :disabled="!loginName.trim() || !loginPassword.trim()">
+        注 册
+      </button>
+      <div class="login-switch">
+        <span v-if="loginMode==='login'" @click="loginMode='register';loginPassword=''">
+          没有账号？<a>立即注册</a>
+        </span>
+        <span v-else @click="loginMode='login';loginPassword=''">
+          已有账号？<a>去登录</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ 左侧边栏 ═══════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1>🌍 智能旅行规划</h1>
+      <p>Multi-Agent Travel Planner</p>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-item" :class="{active:tab===0}" @click="tab=0">
+        <span class="nav-icon">📝</span> 规划行程
+      </div>
+      <div class="sidebar-item" :class="{active:tab===1}" @click="tab=1">
+        <span class="nav-icon">🗺️</span> 我的行程
+        <span class="nav-badge" v-if="trips.length">{{ trips.length }}</span>
+      </div>
+      <div class="sidebar-item" :class="{active:tab===2}" @click="tab=2">
+        <span class="nav-icon">💬</span> 对话助手
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" v-if="currentUser.username">
+        <span class="user-avatar">{{ currentUser.avatar || '🧳' }}</span>
+        <span class="user-name">{{ currentUser.username }}</span>
+        <button class="user-logout" @click="doLogout">退出</button>
+      </div>
+      <div class="status-dot">
+        <span class="dot" :class="{off:!llmAvailable}"></span>
+        {{ llmAvailable ? 'AI 引擎已连接' : '本地引擎运行中' }}
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════ 主内容区 ═══════════ -->
+  <main class="main-content">
+
+    <!-- ═════════ Tab 0: 规划 ═════════ -->
+    <div v-show="tab===0">
+      <h2 class="page-title">📝 规划新行程</h2>
+      <p class="page-subtitle">填写旅行需求，AI多Agent协作为你生成专属旅行方案。自然语言输入请使用右侧「💬 对话助手」</p>
+
+      <div class="two-col">
+        <!-- 左侧：输入区 -->
+        <div class="col-left">
+          <div class="glass">
+            <label class="form-label">🏙️ 目的地</label>
+            <select class="form-input" v-model="form.destination" style="margin-bottom:12px">
+              <option value="">-- 选择城市 --</option>
+              <option v-for="c in cities" :key="c.name" :value="c.name">{{ c.name }} · {{ c.province }}</option>
+            </select>
+
+            <div class="form-row">
+              <div>
+                <label class="form-label">📅 旅行天数</label>
+                <select class="form-input" v-model.number="form.days">
+                  <option v-for="d in [1,2,3,4,5,6,7,10,14]" :key="d" :value="d">{{ d }} 天</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">💰 预算等级</label>
+                <select class="form-input" v-model="form.budget">
+                  <option value="budget">经济型 💚</option>
+                  <option value="standard" selected>舒适型 💙</option>
+                  <option value="luxury">豪华型 💎</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label class="form-label">👥 同行人员</label>
+                <select class="form-input" v-model="form.companions">
+                  <option>独自</option><option>情侣</option><option>朋友</option><option>家庭</option><option>亲子</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="form-label">🎯 偏好标签（点击多选）</label>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+              <span v-for="p in prefOptions" :key="p" class="budget-tag"
+                    :style="form.preferences.includes(p)?'background:rgba(5,150,105,0.12);border-color:#059669;color:#059669':''"
+                    style="cursor:pointer" @click="togglePref(p)">{{ p }}</span>
+            </div>
+
+            <button class="btn btn-go" @click="startPlan" :disabled="planning||!form.destination">
+              {{ planning ? '⏳ 规划中...' : '🚀 开始智能规划' }}
+            </button>
+          </div>
+
+        </div>
+
+        <!-- 右侧：进度 + 结果预览 -->
+        <div class="col-wide">
+          <!-- 规划进度 -->
+          <div class="glass" v-if="agents.length">
+            <h3 style="font-size:15px;margin-bottom:12px;color:var(--text-2)">🔄 Agent 协作进度</h3>
+            <div v-for="a in agents" :key="a.agent" class="agent-item" :class="{running:a.status==='running'}">
+              <span class="agent-icon">{{ a.icon }}</span>
+              <div class="agent-info">
+                <div class="agent-name">{{ a.agent }}</div>
+                <div class="agent-msg">{{ a.message }}</div>
+              </div>
+              <span class="agent-status">{{ a.status==='running'?'⏳':a.status==='done'?'✅':a.status==='error'?'❌':'⏸️' }}</span>
+            </div>
+            <div class="progress-bar" v-if="planning">
+              <div class="progress-fill" :style="{width:progressPct+'%'}"></div>
+            </div>
+          </div>
+
+          <!-- 快速结果预览 -->
+          <div class="glass" v-if="latestItinerary && !planning" style="animation:fadeUp 0.5s ease">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <h3 style="font-size:17px">📋 {{ latestItinerary.destination }} {{ latestItinerary.days }}日游</h3>
+              <span style="font-size:13px;color:var(--text-2)">💰 {{ latestItinerary.budget_label }}</span>
+            </div>
+            <div v-for="day in latestItinerary.daily_schedule" :key="day.day" class="day-card">
+              <div class="day-header">
+                <span class="day-title">📅 第{{ day.day }}天 · {{ day.date }}</span>
+                <span class="day-weather" v-if="day.weather">{{ day.weather.weather }} {{ day.weather.temp }}</span>
+              </div>
+              <div v-for="item in day.items" :key="item.name" class="place-item">
+                <span class="place-time">{{ item.time }}</span>
+                <div class="place-info">
+                  <div class="place-name">{{ item.name }}</div>
+                  <div class="place-meta">📍 {{ item.address }} · ⏱️ {{ item.duration }}</div>
+                  <div class="place-tips" v-if="item.tips">💡 {{ item.tips }}</div>
+                </div>
+                <span class="place-ticket" v-if="item.ticket">¥{{ item.ticket }}</span>
+              </div>
+            </div>
+            <div style="text-align:center;margin-top:12px">
+              <button class="btn btn-outline btn-sm" @click="tab=1">📋 查看完整行程与预算明细</button>
+            </div>
+          </div>
+
+          <!-- 空状态 -->
+          <div class="glass" v-if="!agents.length && !latestItinerary" style="text-align:center;padding:60px 20px">
+            <div style="font-size:64px;margin-bottom:16px">🧳</div>
+            <p style="font-size:16px;font-weight:600;color:var(--text)">准备开始你的旅行规划</p>
+            <p style="font-size:13px;color:var(--text-2);margin-top:6px">选择目的地和偏好，AI多Agent将协作生成专属行程</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═════════ Tab 1: 行程管理 ═════════ -->
+    <div v-show="tab===1">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h2 class="page-title" style="margin-bottom:0">🗺️ 我的行程</h2>
+        <button class="btn btn-outline btn-sm" @click="loadTrips">🔄 刷新列表</button>
+      </div>
+
+      <!-- 空状态 -->
+      <div v-if="trips.length === 0" class="glass" style="text-align:center;padding:80px 20px">
+        <div style="font-size:64px;margin-bottom:16px">🗺️</div>
+        <p style="font-size:16px;color:var(--text-2)">还没有旅行计划</p>
+        <p style="font-size:13px;color:var(--text-2);margin-top:4px">去「规划行程」页创建你的第一个旅行方案吧～</p>
+        <button class="btn btn-go" style="width:auto;margin-top:20px;padding:10px 32px" @click="tab=0">🚀 去规划</button>
+      </div>
+
+      <!-- 双栏：行程列表 + 详情 -->
+      <div class="two-col" v-if="trips.length > 0">
+        <!-- 左侧：行程列表 -->
+        <div class="col-left">
+          <div class="glass trip-list">
+            <div v-for="trip in trips" :key="trip.id" class="trip-list-item"
+                 :class="{active:selectedTrip&&selectedTrip.id===trip.id}"
+                 @click="selectTrip(trip)">
+              <span class="trip-icon">{{ cityEmoji(trip) }}</span>
+              <div style="flex:1;min-width:0">
+                <div class="trip-dest">{{ trip.itinerary_json?.destination || trip.destination }}</div>
+                <div class="trip-info">{{ trip.itinerary_json?.days || trip.days }}天 · {{ trip.itinerary_json?.budget_label || trip.budget }} · {{ trip.itinerary_json?.preferences || '综合体验' }}</div>
+              </div>
+              <div class="trip-date">{{ formatDate(trip.created_at) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧：行程详情 -->
+        <div class="col-wide" v-if="selectedTrip">
+          <!-- 行程概览 -->
+          <div class="glass">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <h3 style="font-size:18px">{{ selectedTrip.itinerary_json?.destination }} {{ selectedTrip.itinerary_json?.days }}日游</h3>
+              <button class="btn btn-outline btn-sm" @click="deleteSelectedTrip" style="color:var(--danger)">🗑️ 删除</button>
+            </div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--text-2);margin-bottom:14px">
+              <span>💰 {{ selectedTrip.itinerary_json?.budget_label }}</span>
+              <span>👥 {{ selectedTrip.itinerary_json?.companions }}</span>
+              <span>🎯 {{ selectedTrip.itinerary_json?.preferences || '综合体验' }}</span>
+            </div>
+
+            <div class="detail-scroll">
+              <div v-for="day in (selectedTrip.itinerary_json?.daily_schedule || [])" :key="day.day" class="day-card">
+                <div class="day-header">
+                  <span class="day-title">📅 第{{ day.day }}天 · {{ day.date }}</span>
+                  <span class="day-weather" v-if="day.weather">{{ day.weather.weather }} {{ day.weather.temp }}</span>
+                </div>
+                <div class="day-summary" style="margin-bottom:8px">{{ day.summary }}</div>
+                <div v-for="item in day.items" :key="item.name" class="place-item">
+                  <span class="place-time">{{ item.time }}</span>
+                  <div class="place-info">
+                    <div class="place-name">{{ item.name }} <span style="font-size:11px;color:var(--accent2)">⭐{{ item.rating }}</span></div>
+                    <div class="place-meta">📍 {{ item.address }} · ⏱️ {{ item.duration }}</div>
+                    <div class="place-tips" v-if="item.tips">💡 {{ item.tips }}</div>
+                  </div>
+                  <span class="place-ticket" v-if="item.ticket">¥{{ item.ticket }}</span>
+                </div>
+                <div class="meal-section" v-if="day.meal_tips">
+                  <span class="label">🍽️ 美食推荐：</span>
+                  <span v-if="day.meal_tips.早餐">早：{{ day.meal_tips.早餐 }} | </span>
+                  <span v-if="day.meal_tips.午餐">午：{{ day.meal_tips.午餐 }} | </span>
+                  <span v-if="day.meal_tips.晚餐">晚：{{ day.meal_tips.晚餐 }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 预算图表 -->
+          <div class="glass" v-if="selectedBudget">
+            <h3 style="font-size:16px;margin-bottom:4px">💳 预算分布</h3>
+            <div class="budget-summary">
+              <div class="budget-total">¥{{ (selectedBudget.total||0).toLocaleString() }} <small>预估总费用</small></div>
+            </div>
+            <div class="budget-chart" id="budgetChart"></div>
+            <div class="budget-items">
+              <span class="budget-tag" v-for="(v,k) in budgetCategories" :key="k">{{ v.icon }} {{ v.name }}: ¥{{ (v.amount||0).toLocaleString() }}</span>
+            </div>
+            <div v-if="selectedBudget.optimization_tip" style="font-size:12px;color:var(--accent2);text-align:center;margin-top:10px">
+              💡 {{ selectedBudget.optimization_tip }}
+            </div>
+          </div>
+        </div>
+
+        <!-- 未选中时提示 -->
+        <div class="col-wide" v-if="!selectedTrip && trips.length > 0">
+          <div class="glass" style="text-align:center;padding:80px 20px">
+            <div style="font-size:48px;margin-bottom:12px">👈</div>
+            <p style="color:var(--text-2)">从左侧列表选择一个行程查看详情</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═════════ Tab 2: 对话助手 ═════════ -->
+    <div v-show="tab===2">
+      <h2 class="page-title">💬 旅行对话助手</h2>
+      <p class="page-subtitle">用自然语言描述需求，AI理解后自动触发多Agent规划，支持多轮修改</p>
+
+      <div class="chat-panel">
+        <!-- 左侧：聊天区 -->
+        <div class="chat-main">
+          <div class="glass chat-messages" ref="chatArea">
+            <div v-if="chatMessages.length===0" style="text-align:center;padding:60px 20px;color:var(--text-2)">
+              <div style="font-size:56px;margin-bottom:14px">💬</div>
+              <p style="font-size:15px;font-weight:600">告诉我你的旅行想法</p>
+              <p style="font-size:13px;margin-top:6px">例如：「想去成都玩4天，爱吃火锅，预算舒适」</p>
+            </div>
+
+            <div v-for="(msg,i) in chatMessages" :key="i" class="chat-msg" :class="msg.role">
+              <div class="chat-avatar">{{ msg.role==='user'?'😎':msg.role==='system'?'🤖':'🧳' }}</div>
+              <div class="chat-bubble">{{ msg.content }}</div>
+            </div>
+
+            <!-- 流式进度 -->
+            <div v-if="chatAgents.length" style="margin-top:8px">
+              <div v-for="a in chatAgents" :key="a.agent" class="agent-item" :class="{running:a.status==='running'}">
+                <span class="agent-icon">{{ a.icon }}</span>
+                <div class="agent-info">
+                  <div class="agent-name" style="font-size:12px">{{ a.agent }}</div>
+                  <div class="agent-msg" style="font-size:11px">{{ a.message }}</div>
+                </div>
+                <span class="agent-status" style="font-size:14px">{{ a.status==='running'?'⏳':'✅' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input-row">
+            <input v-model="chatInput" @keyup.enter="sendChatMessage"
+                   placeholder="描述你的旅行需求，或对已有行程提出修改..."
+                   :disabled="planning">
+            <button class="btn-send" @click="sendChatMessage" :disabled="!chatInput.trim()||planning">➤</button>
+          </div>
+        </div>
+
+        <!-- 右侧：快捷操作 + 状态 -->
+        <div class="chat-sidebar">
+          <div class="glass">
+            <h3 style="font-size:14px;margin-bottom:10px;color:var(--text-2)">💡 试试这样说</h3>
+            <div class="quick-row">
+              <span class="quick-chip" v-for="qt in quickChats" :key="qt" @click="chatInput=qt;sendChatMessage()">{{ qt }}</span>
+            </div>
+          </div>
+
+          <div class="glass" v-if="latestItinerary">
+            <h3 style="font-size:14px;margin-bottom:8px;color:var(--text-2)">📌 当前行程</h3>
+            <div style="font-size:15px;font-weight:700">{{ latestItinerary.destination }} {{ latestItinerary.days }}日游</div>
+            <div style="font-size:12px;color:var(--text-2);margin-top:2px">💰 ¥{{ (latestBudget?.total||0).toLocaleString() }}</div>
+            <div style="font-size:12px;color:var(--text-2);margin-top:8px">💡 可以对话修改：<br>"第一天太满了" / "多加点美食"</div>
+          </div>
+
+          <div class="glass">
+            <h3 style="font-size:14px;margin-bottom:8px;color:var(--text-2)">🤖 Agent状态</h3>
+            <div class="status-dot" style="margin-bottom:4px">
+              <span class="dot" :class="{off:!llmAvailable}"></span>
+              {{ llmAvailable ? 'AI已连接' : '本地引擎' }}
+            </div>
+            <div style="font-size:11px;color:#aaa">Intent → Explore<br>→ Hotel → Weather<br>→ Planner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Vue3 Application — 智能旅行规划系统（桌面版）
+   ═══════════════════════════════════════════════════════════════════════════ */
+const { createApp, ref, reactive, computed, nextTick, onMounted, watch } = Vue
+
+createApp({
+  setup() {
+    const tab = ref(0)
+    const planning = ref(false)
+    const llmAvailable = ref(false)
+    const toast = reactive({ show: false, msg: '', timer: null })
+
+    // ── 用户登录状态 ──
+    const showLogin = ref(true)
+    const loginMode = ref('login')  // 'login' | 'register'
+    const loginName = ref('')
+    const loginPassword = ref('')
+    const currentUser = reactive({ id: 0, username: '', avatar: '🧳' })
+    const userId = computed(() => currentUser.id || 0)
+
+    const form = reactive({
+      destination: '', days: 3, budget: 'standard',
+      preferences: '', companions: '独自',
+    })
+    const prefOptions = ['美食', '历史文化', '自然风光', '拍照打卡', '购物', '亲子', '休闲放松', '探险户外']
+
+    const cities = ref([])
+    const agents = ref([])
+    const progressPct = ref(0)
+    const agentSteps = ['IntentAgent', 'ExploreAgent', 'HotelAgent', 'WeatherAgent', 'PlannerAgent']
+
+    const latestItinerary = ref(null)
+    const latestBudget = ref(null)
+    const currentTripId = ref(null)
+
+    const trips = ref([])
+    const selectedTrip = ref(null)
+    const selectedBudget = ref(null)
+    const budgetCategories = ref({})
+
+    const chatInput = ref('')
+    const chatMessages = ref([])
+    const chatAgents = ref([])
+    const quickChats = [
+      '想去西安玩3天，喜欢历史和美食，中等预算',
+      '想在成都待4天，看熊猫吃火锅，经济实惠',
+      '去三亚度假5天，豪华享受',
+      '带娃去杭州2天，轻松休闲',
+    ]
+
+    function showToast(msg) {
+      if (toast.timer) clearTimeout(toast.timer)
+      toast.msg = msg; toast.show = true
+      toast.timer = setTimeout(() => { toast.show = false }, 2500)
+    }
+
+    // ── 注册 / 登录 / 退出 ──
+    async function doRegister() {
+      const name = loginName.value.trim()
+      const pw = loginPassword.value.trim()
+      if (!name || !pw) return
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: name, password: pw }),
+        })
+        const data = await res.json()
+        if (data.ok) {
+          loginSuccess(data.user)
+          showToast(`🎉 注册成功，欢迎 ${data.user.username}！`)
+        } else {
+          showToast('❌ ' + (data.error || '注册失败'))
+        }
+      } catch (e) { showToast('网络错误，请重试') }
+    }
+
+    async function doLogin() {
+      const name = loginName.value.trim()
+      const pw = loginPassword.value.trim()
+      if (!name || !pw) return
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: name, password: pw }),
+        })
+        const data = await res.json()
+        if (data.ok) {
+          loginSuccess(data.user)
+          showToast(`👋 欢迎回来，${data.user.username}！`)
+        } else {
+          showToast('❌ ' + (data.error || '登录失败'))
+        }
+      } catch (e) { showToast('网络错误，请重试') }
+    }
+
+    function loginSuccess(user) {
+      currentUser.id = user.id
+      currentUser.username = user.username
+      currentUser.avatar = user.avatar || '🧳'
+      localStorage.setItem('travel_user_id', user.id)
+      localStorage.setItem('travel_user_name', user.username)
+      localStorage.setItem('travel_user_avatar', user.avatar || '🧳')
+      showLogin.value = false
+      loginName.value = ''
+      loginPassword.value = ''
+      loadTrips()
+    }
+
+    function doLogout() {
+      localStorage.removeItem('travel_user_id')
+      localStorage.removeItem('travel_user_name')
+      localStorage.removeItem('travel_user_avatar')
+      currentUser.id = 0
+      currentUser.username = ''
+      currentUser.avatar = '🧳'
+      trips.value = []
+      selectedTrip.value = null
+      selectedBudget.value = null
+      latestItinerary.value = null
+      latestBudget.value = null
+      showLogin.value = true
+      showToast('已退出登录')
+    }
+
+    function togglePref(p) {
+      const arr = form.preferences ? form.preferences.split('、').filter(Boolean) : []
+      const idx = arr.indexOf(p)
+      if (idx >= 0) arr.splice(idx, 1)
+      else arr.push(p)
+      form.preferences = arr.join('、')
+    }
+
+    function cityEmoji(trip) {
+      const d = trip.itinerary_json?.destination || trip.destination || ''
+      const m = { '北京':'🏯','西安':'🏛️','成都':'🐼','上海':'🌃','杭州':'🏞️','三亚':'🏖️','广州':'🌆','重庆':'🌉','南京':'🏰','厦门':'🏝️','昆明':'🌸','长沙':'🔥' }
+      return m[d] || '🏔️'
+    }
+
+    async function startPlan() {
+      if (!form.destination || planning.value) return
+      planning.value = true
+      agents.value = agentSteps.map(a => ({ agent: a, icon: '', status: 'pending', message: '等待中...' }))
+      progressPct.value = 0
+
+      try {
+        const response = await fetch('/api/plan/stream', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ destination: form.destination, days: form.days, budget: form.budget, preferences: form.preferences, companions: form.companions, user_id: userId.value }),
+        })
+        await readStream(response, 'form')
+      } catch (e) { showToast('网络错误: ' + e.message); planning.value = false }
+    }
+
+    async function readStream(response, mode) {
+      const reader = response.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      try {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buffer += decoder.decode(value, { stream: true })
+          const lines = buffer.split('\n')
+          buffer = lines.pop() || ''
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try { handleSSEEvent(JSON.parse(line.slice(6)), mode) } catch(e) {}
+            }
+          }
+        }
+      } finally { planning.value = false }
+    }
+
+    function handleSSEEvent(event, mode) {
+      if (event.type === 'start') {
+        const iconMap = {IntentAgent:'🎯',ExploreAgent:'🔍',HotelAgent:'🏨',WeatherAgent:'🌤️',PlannerAgent:'📋'}
+        agents.value = agentSteps.map(a => ({ agent: a, icon: iconMap[a]||'🤖', status: 'pending', message: '准备中...' }))
+      } else if (event.type === 'progress') {
+        const idx = agents.value.findIndex(a => a.agent === event.agent)
+        if (idx >= 0) { agents.value[idx].status = event.status; agents.value[idx].message = event.message; if (event.icon) agents.value[idx].icon = event.icon }
+        const doneCount = agents.value.filter(a => a.status === 'done' || a.status === 'error').length
+        progressPct.value = Math.round((doneCount / agents.value.length) * 100)
+        if (mode === 'chat') chatAgents.value = [...agents.value]
+      } else if (event.type === 'result') {
+        if (event.ok && event.itinerary) {
+          latestItinerary.value = event.itinerary; latestBudget.value = event.budget; currentTripId.value = event.trip_id
+          if (mode === 'chat') {
+            chatMessages.value.push({ role: 'assistant', content: `✅ 行程已生成！「${event.itinerary.destination}」${event.itinerary.days}日游，总预算约¥${(event.budget?.total||0).toLocaleString()}。点击左侧「我的行程」查看详情～` })
+            chatAgents.value = []
+          }
+          loadTrips()
+          showToast('🎉 行程规划完成！')
+        } else if (event.error) { showToast('❌ ' + event.error) }
+      } else if (event.type === 'error') { showToast('❌ ' + event.message) }
+    }
+
+    async function loadTrips() {
+      try {
+        const res = await fetch(`/api/trips?user_id=${userId.value}`)
+        const data = await res.json()
+        if (data.ok) trips.value = data.trips
+      } catch(e) {}
+    }
+
+    function selectTrip(trip) {
+      selectedTrip.value = trip; selectedBudget.value = trip.budget_json || {}
+      const b = trip.budget_json || {}
+      if (b.transport) { budgetCategories.value = { transport: b.transport, hotel: b.hotel, food: b.food, tickets: b.tickets, other: b.other } }
+      nextTick(() => renderBudgetChart())
+    }
+
+    async function deleteSelectedTrip() {
+      if (!selectedTrip.value) return
+      if (!confirm('确定删除这个行程吗？')) return
+      try {
+        await fetch(`/api/trips/${selectedTrip.value.id}`, { method: 'DELETE' })
+        showToast('已删除'); selectedTrip.value = null; selectedBudget.value = null; loadTrips()
+      } catch(e) { showToast('删除失败') }
+    }
+
+    function renderBudgetChart() {
+      const el = document.getElementById('budgetChart')
+      if (!el || !selectedBudget.value) return
+      const b = selectedBudget.value
+      const existing = echarts.getInstanceByDom(el)
+      if (existing) existing.dispose()
+      const chart = echarts.init(el)
+      const data = []
+      if (b.transport?.amount) data.push({ name: '交通 '+(b.transport.icon||'🚄'), value: b.transport.amount, itemStyle: { color: '#3B82F6' } })
+      if (b.hotel?.amount) data.push({ name: '住宿 '+(b.hotel.icon||'🏨'), value: b.hotel.amount, itemStyle: { color: '#8B5CF6' } })
+      if (b.food?.amount) data.push({ name: '餐饮 '+(b.food.icon||'🍜'), value: b.food.amount, itemStyle: { color: '#F59E0B' } })
+      if (b.tickets?.amount) data.push({ name: '门票 '+(b.tickets.icon||'🎫'), value: b.tickets.amount, itemStyle: { color: '#EF4444' } })
+      if (b.other?.amount) data.push({ name: '其他 '+(b.other.icon||'💡'), value: b.other.amount, itemStyle: { color: '#6B7280' } })
+      chart.setOption({
+        tooltip: { trigger: 'item', formatter: '{b}: ¥{c} ({d}%)' },
+        series: [{
+          type: 'pie', radius: ['45%', '75%'], center: ['50%', '50%'],
+          avoidLabelOverlap: false,
+          itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 3 },
+          label: { show: true, formatter: '{b}\n¥{c}', fontSize: 12 },
+          emphasis: { label: { fontSize: 16, fontWeight: 'bold' }, scaleSize: 10 },
+          data: data,
+        }],
+      })
+    }
+
+    async function sendChatMessage() {
+      if (!chatInput.value.trim() || planning.value) return
+      const msg = chatInput.value.trim()
+      chatInput.value = ''
+      chatMessages.value.push({ role: 'user', content: msg })
+
+      const isMod = currentTripId.value && ['改','换','调整','去掉','增加','少','太多','太满','太累','不要'].some(k => msg.includes(k))
+
+      if (isMod && currentTripId.value) {
+        chatMessages.value.push({ role: 'system', content: '🔄 正在调整行程...' })
+        planning.value = true
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg, user_id: userId.value, trip_id: currentTripId.value }),
+          })
+          const data = await res.json()
+          if (data.ok) {
+            chatMessages.value.push({ role: 'assistant', content: data.reply })
+            latestItinerary.value = data.itinerary; latestBudget.value = data.budget; loadTrips()
+          }
+        } catch(e) {}
+        planning.value = false
+      } else {
+        currentTripId.value = null
+        chatMessages.value.push({ role: 'system', content: '🤔 正在分析您的需求...' })
+        planning.value = true
+        try {
+          const res = await fetch('/api/chat', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg, user_id: userId.value }),
+          })
+          const data = await res.json()
+          if (data.ok) {
+            if (data.type === 'ready_to_plan') {
+              chatMessages.value.push({ role: 'assistant', content: data.reply })
+              const planRes = await fetch('/api/chat/plan', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ extracted: data.extracted, user_id: userId.value }),
+              })
+              chatAgents.value = agentSteps.map(a => ({ agent: a, icon: '🤖', status: 'pending', message: '准备中...' }))
+              await readStream(planRes, 'chat')
+              loadTrips()
+            } else { chatMessages.value.push({ role: 'assistant', content: data.reply }) }
+          }
+        } catch(e) {}
+        planning.value = false
+      }
+    }
+
+    function formatDate(ts) {
+      if (!ts) return ''
+      const d = new Date(ts.replace(' ', 'T') + (ts.includes('Z') ? '' : 'Z'))
+      const now = new Date()
+      const diff = now - d
+      if (diff < 86400000) return Math.floor(diff/3600000)+'小时前'
+      if (diff < 604800000) return Math.floor(diff/86400000)+'天前'
+      return `${d.getMonth()+1}/${d.getDate()}`
+    }
+
+    watch(tab, (val) => {
+      if (val === 1) { loadTrips(); nextTick(() => renderBudgetChart()) }
+    })
+
+    onMounted(async () => {
+      // 恢复登录态
+      const savedId = localStorage.getItem('travel_user_id')
+      const savedName = localStorage.getItem('travel_user_name')
+      const savedAvatar = localStorage.getItem('travel_user_avatar')
+      if (savedId && savedName) {
+        currentUser.id = parseInt(savedId)
+        currentUser.username = savedName
+        currentUser.avatar = savedAvatar || '🧳'
+        showLogin.value = false
+      }
+
+      try { const res = await fetch('/api/cities'); const data = await res.json(); if (data.ok) cities.value = data.cities } catch(e) {}
+      try { const res = await fetch('/api/status'); const data = await res.json(); llmAvailable.value = data.llm_available } catch(e) {}
+      if (currentUser.id) loadTrips()
+    })
+
+    return {
+      tab, planning, llmAvailable, toast, userId,
+      showLogin, loginMode, loginName, loginPassword, currentUser,
+      form, prefOptions, cities,
+      agents, progressPct,
+      latestItinerary, latestBudget, currentTripId,
+      trips, selectedTrip, selectedBudget, budgetCategories,
+      chatInput, chatMessages, chatAgents, quickChats,
+      togglePref, startPlan, doRegister, doLogin, doLogout,
+      loadTrips, selectTrip, deleteSelectedTrip,
+      sendChatMessage, formatDate, showToast, cityEmoji,
+    }
+  }
+}).mount('#app')
+</script>
+</body>
+</html>
