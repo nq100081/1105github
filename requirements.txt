@@ -2,7 +2,7 @@
 # 智能旅行规划系统 依赖清单
 # pip install -r requirements.txt
 # ============================================================
-flask>=3.0
+flask>=3.1
 flask-cors>=4.0
 python-dotenv>=1.0
 requests>=2.31
